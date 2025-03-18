@@ -30,14 +30,33 @@ const initialProducts = [
 ];
 
 function App() {
+  const [products, setProducts] = useState(initialProducts);
 
- 
+  const updateRating = (productId, rating) => {
+    setProducts(products.map((product) => {
+      if (product.id !== productId) return product;
+      return {
+        ...product,
+        totalRatings: product.totalRatings + 1,
+        avgRating:
+          (product.avgRating * product.totalRatings + rating) /
+          (product.totalRatings + 1),
+      };
+    }));
+  };
 
   return (
     <div>
-     {/* code here */}
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          updateRating={updateRating}
+        />
+      ))}
     </div>
   );
 }
 
 export default App;
+
